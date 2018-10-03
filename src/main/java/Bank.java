@@ -9,8 +9,10 @@
  */
 public class Bank {
 
+    /**This is the name of the bank*/
     public String bankName;
 
+    /**This is constructor.*/
     public Bank() {
         bankName = "Illini Bank";
     }
@@ -26,9 +28,13 @@ public class Bank {
      * @return boolean
      */
     public boolean withdrawMoney(final BankAccount bankAccount, final double amount) {
-        /*
-         * Implement this function
-         */
+        if (bankAccount.getAccountBalance() > amount) {
+            bankAccount.setAccountBalance(amount * -1);
+            System.out.println(bankAccount.getOwnerName() + " has withdrawn $" + amount + ".");
+            return true;
+        }
+        System.out.println("Sorry, cannot withdraw $" + amount + "from " + bankAccount.getOwnerName() + "'s account");
+        return false;
     }
 
     /**
@@ -42,9 +48,9 @@ public class Bank {
      * @return boolean
      */
     public boolean depositMoney(final BankAccount bankAccount, final double amount) {
-        /*
-         * Implement this function
-         */
+        bankAccount.setAccountBalance(amount);
+        System.out.println(bankAccount.getOwnerName() + " has deposited $" + amount + ".");
+        return true;
     }
 
     /**
@@ -61,9 +67,14 @@ public class Bank {
 
     public boolean transferMoney(final BankAccount source, final BankAccount destination,
             final double amount) {
-        /*
-         * Implement this function
-         */
+        if (withdrawMoney(source, amount)) {
+            depositMoney(destination, amount);
+            System.out.println(source.getOwnerName() + " transfered $" + amount + " to " + destination.getOwnerName()
+                    + ".");
+            return true;
+        }
+        System.out.println("Sorry, transaction failed.");
+        return false;
     }
 
     /**
@@ -74,21 +85,19 @@ public class Bank {
      */
 
     public void changeOwnerName(final BankAccount bankAccount, final String name) {
-        /*
-         * Implement this function
-         */
+        bankAccount.setOwnerName(name);
     }
 
-    public static int totalAccounts = 0;
+    /**Number of accounts in the banks*/
+    public static int totalAccounts = BankAccount.numBanks;
+
     /**
      * Uses static variable to get number of bank accounts opened.
      *
      * @return the total number of accounts
      */
     public static int getNumberOfAccount() {
-        /*
-         * Implement this function
-         */
+        return totalAccounts;
     }
 
     /**
